@@ -93,3 +93,11 @@ input::file-selector-button:active {
     transform: scale(0.95);
     transition-duration: 0.1s;
 }
+
+@media (max-width: 768px) {
+    .playBtn,
+    .stopBtn,
+    .PalPitchBtn {
+        display: none;
+    }
+}

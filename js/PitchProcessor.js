@@ -29,6 +29,11 @@ function loadSong(t) {
                 playBtn.html('<i class="fas fa-pause"></i> Pause');
             }
         });
+
+        stopBtn.mousePressed(function() {
+            song.stop();
+            playBtn.html('<i class="fas fa-play"></i> Play');
+        });
     
         PalPitchBtn.mousePressed(function() {
             if (isPalPitched) {
