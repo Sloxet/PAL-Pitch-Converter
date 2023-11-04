@@ -14,7 +14,7 @@ PAL Pitch Converter is an open-source web application that allows you to convert
 ## How to Use
 * **Upload your file:** Visit the website and upload your audio or video file that you want to convert.
 * **Convert:** Click on the 'NTSC' button to alternate between NTSC and PAL standard pitch and speed.
-* **Download:** Once the conversion is done, download your PAL-compatible audio or video file. (Coming soon)
+* **Download:** Once the conversion is done, download your PAL-compatible audio or video file.
 
 ## Supported File Types
 * **Audio Formats:** MP3, WAV, AAC, OGG, FLAC, etc.
