@@ -1,47 +1,150 @@
 function loadSong(t) {
-    song = new p5.SoundFile(t,function() {
-        playBtn = createButton('<i class="fas fa-play"></i> Play'),
-        stopBtn = createButton('<i class="fas fa-stop"></i> Stop'),
-        PalPitchBtn = createButton('<i class="fa-solid fa-earth-americas"></i> NTSC'),
-        playBtn.parent("buttons"),
-        stopBtn.parent("buttons"),
+    song = new p5.SoundFile(t, function() {
+        playBtn = createButton('<i class="fas fa-play"></i> Play');
+        stopBtn = createButton('<i class="fas fa-stop"></i> Stop');
+        PalPitchBtn = createButton('<i class="fa-solid fa-earth-americas"></i> NTSC');
+        downloadBtn = createButton('<i class="fas fa-download"></i> Download');
+        
+        playBtn.parent("buttons");
+        stopBtn.parent("buttons");
         PalPitchBtn.parent("buttons");
-        var t = !1;
+        downloadBtn.parent("buttons");
+
+        var isPalPitched = false;
+
         playBtn.mousePressed(function() {
-            song.isPlaying() ? (song.pause(),
-            playBtn.html('<i class="fas fa-play"></i> Play')) : (song.play(),
-            playBtn.html('<i class="fas fa-pause"></i> Pause'))
-        }),
+            if (song.isPlaying()) {
+                song.pause();
+                playBtn.html('<i class="fas fa-play"></i> Play');
+            } else {
+                song.play();
+                playBtn.html('<i class="fas fa-pause"></i> Pause');
+            }
+        });
+
         stopBtn.mousePressed(function() {
-            song.stop(),
-            playBtn.html('<i class="fas fa-play"></i> Play')
-        }),
+            song.stop();
+            playBtn.html('<i class="fas fa-play"></i> Play');
+        });
+
         PalPitchBtn.mousePressed(function() {
-            t ? (PalPitchBtn.html('<i class="fa-solid fa-earth-americas"></i> NTSC'),
-            song.rate(1),
-            t = !1) : (PalPitchBtn.html('<i class="fa-solid fa-earth-europe"></i> PAL'),
-            song.rate(1.04),
-            t = !0)
-        })
+            if (isPalPitched) {
+                PalPitchBtn.html('<i class="fa-solid fa-earth-americas"></i> NTSC');
+                song.rate(1);
+                isPalPitched = false;
+            } else {
+                PalPitchBtn.html('<i class="fa-solid fa-earth-europe"></i> PAL');
+                song.rate(1.04);
+                isPalPitched = true;
+            }
+        });
+
+        downloadBtn.mousePressed(function() {
+            var fileNameWithoutExtension = file.elt.files[0].name.replace(/\.[^/.]+$/, '');
+            var downloadFileName = fileNameWithoutExtension + ' (PAL Pitch).wav';
+
+            var offlineContext = new OfflineAudioContext(2, song.buffer.length, song.buffer.sampleRate);
+
+            var source = offlineContext.createBufferSource();
+            source.buffer = song.buffer;
+
+            var pitchShift = 1.14;
+            source.playbackRate.value = pitchShift;
+
+            source.connect(offlineContext.destination);
+
+            source.start();
+
+            offlineContext.startRendering().then(function(renderedBuffer) {
+                var wavBlob = audioBufferToWav(renderedBuffer);
+                
+                var downloadLink = document.createElement('a');
+                downloadLink.href = URL.createObjectURL(wavBlob);
+                downloadLink.download = downloadFileName;
+                downloadLink.click();
+            });
+        });
+    });
+}
+
+function audioBufferToWav(buffer) {
+    var interleaved = interleave(buffer.getChannelData(0), buffer.getChannelData(1));
+    var wavBuffer = writeWav(interleaved);
+    return new Blob([wavBuffer], { type: 'audio/wav' });
+
+    function interleave(leftChannel, rightChannel) {
+        var totalLength = leftChannel.length + rightChannel.length;
+        var result = new Float32Array(totalLength);
+        var inputIndex = 0;
+
+        for (var index = 0; index < totalLength;) {
+            result[index++] = leftChannel[inputIndex];
+            result[index++] = rightChannel[inputIndex];
+            inputIndex++;
+        }
+
+        return result;
     }
-    )
+
+    function writeWav(samples) {
+        var buffer = new ArrayBuffer(44 + samples.length * 2);
+        var view = new DataView(buffer);
+
+        writeString(view, 0, 'RIFF');
+        view.setUint32(4, 36 + samples.length * 2, true);
+        writeString(view, 8, 'WAVE');
+        writeString(view, 12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, 2, true);
+        view.setUint32(24, 44100, true);
+        view.setUint32(28, 44100 * 4, true);
+        view.setUint16(32, 4, true);
+        view.setUint16(34, 16, true);
+        writeString(view, 36, 'data');
+        view.setUint32(40, samples.length * 2, true);
+
+        floatTo16BitPCM(view, 44, samples);
+
+        return buffer;
+    }
+
+    function writeString(view, offset, string) {
+        for (var i = 0; i < string.length; i++) {
+            view.setUint8(offset + i, string.charCodeAt(i));
+        }
+    }
+
+    function floatTo16BitPCM(output, offset, input) {
+        for (var i = 0; i < input.length; i++, offset += 2) {
+            var s = Math.max(-1, Math.min(1, input[i]));
+            output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+        }
+    }
 }
+
 function setup() {
-    noCanvas(),
+    noCanvas();
     file = createFileInput(function() {
-        void 0 != song && (song.stop(),
-        song = null),
-        removeElem(playBtn),
-        removeElem(stopBtn),
-        removeElem(PalPitchBtn),
-        loadSong(file.elt.files[0])
-    }),
-    file.parent("file-input")
+        if (song !== undefined && song !== null) {
+            song.stop();
+            song = null;
+        }
+        removeElem(playBtn);
+        removeElem(stopBtn);
+        removeElem(PalPitchBtn);
+        removeElem(downloadBtn);
+        loadSong(file.elt.files[0]);
+    });
+    file.parent("file-input");
 }
-function removeElem(t) {
-    void 0 != t && t.remove()
+
+function removeElem(elem) {
+    if (elem !== undefined && elem !== null) {
+        elem.remove();
+    }
 }
-var song, playBtn, stopBtn, PalPitchBtn, file, fileDragged = !1;
+var song, downloadBtn, playBtn, stopBtn, PalPitchBtn, file, fileDragged = !1;
 !function(t) {
     if ("object" == typeof exports && "undefined" != typeof module)
         module.exports = t();
