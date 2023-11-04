@@ -20,7 +20,7 @@ function loadSong(t) {
             t ? (PalPitchBtn.html('<i class="fa-solid fa-earth-americas"></i> NTSC'),
             song.rate(1),
             t = !1) : (PalPitchBtn.html('<i class="fa-solid fa-earth-europe"></i> PAL'),
-            song.rate(1.1),
+            song.rate(1.04),
             t = !0)
         })
     }
