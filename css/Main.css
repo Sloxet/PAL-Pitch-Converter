@@ -78,10 +78,13 @@ input::file-selector-button {
     padding-right: 10px;
 }
 
-button:hover,
-input::file-selector-button:hover {
+button:hover {
     background-color: #ffffff10;
     transform: scale(1.05);
+}
+
+input::file-selector-button:hover {
+    background-color: #ffffff10;
 }
 
 button:active,
