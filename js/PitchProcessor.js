@@ -2,39 +2,42 @@ function loadSong(t) {
     song = new p5.SoundFile(t, function() {
         playBtn = createButton('<i class="fas fa-play"></i> Play');
         stopBtn = createButton('<i class="fas fa-stop"></i> Stop');
-        PalPitchBtn = createButton('<i class="fa-solid fa-earth-americas"></i> NTSC');
+        PalPitchBtn = createButton('<i class="fa-solid fa-earth-europe"></i> PAL'); // Default to PAL
         downloadBtn = createButton('<i class="fas fa-download"></i> Download');
-        
+
+        playBtn.class('playBtn');
+        stopBtn.class('stopBtn');
+        PalPitchBtn.class('PalPitchBtn');
+        downloadBtn.class('downloadBtn');
+
         playBtn.parent("buttons");
         stopBtn.parent("buttons");
         PalPitchBtn.parent("buttons");
         downloadBtn.parent("buttons");
 
-        var isPalPitched = false;
+        var isPalPitched = true;
 
         playBtn.mousePressed(function() {
             if (song.isPlaying()) {
                 song.pause();
                 playBtn.html('<i class="fas fa-play"></i> Play');
             } else {
+                if (isPalPitched) {
+                    song.rate(1.04);
+                }
                 song.play();
                 playBtn.html('<i class="fas fa-pause"></i> Pause');
             }
         });
-
-        stopBtn.mousePressed(function() {
-            song.stop();
-            playBtn.html('<i class="fas fa-play"></i> Play');
-        });
-
+    
         PalPitchBtn.mousePressed(function() {
             if (isPalPitched) {
-                PalPitchBtn.html('<i class="fa-solid fa-earth-americas"></i> NTSC');
                 song.rate(1);
+                PalPitchBtn.html('<i class="fa-solid fa-earth-americas"></i> NTSC');
                 isPalPitched = false;
             } else {
-                PalPitchBtn.html('<i class="fa-solid fa-earth-europe"></i> PAL');
                 song.rate(1.04);
+                PalPitchBtn.html('<i class="fa-solid fa-earth-europe"></i> PAL');
                 isPalPitched = true;
             }
         });
