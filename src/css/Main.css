@@ -1,0 +1,92 @@
+body {
+    background-color: #232327;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+header {
+    text-align: center;
+    margin-top: 20px;
+    position: fixed;
+    width: 100%;
+    background-color: #232327;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+#flags {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#file-input,
+#buttons {
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#flags img {
+    margin-right: 20px;
+    height: auto;
+}
+
+#flags img:hover {
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}
+
+p {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+button,
+input::file-selector-button {
+    background-color: #00000030;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 15px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#buttons button i,
+#file-input label i {
+    padding-right: 10px;
+}
+
+button:hover,
+input::file-selector-button:hover {
+    background-color: #ffffff10;
+    transform: scale(1.05);
+}
+
+button:active,
+input::file-selector-button:active {
+    background-color: #ffffff15;
+    transform: scale(0.95);
+    transition-duration: 0.1s;
+}
