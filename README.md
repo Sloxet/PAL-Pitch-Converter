@@ -1,6 +1,6 @@
 # PAL Pitch Converter
 
-PAL Pitch Converter is an open-source web application that allows you to convert any audio or video file into PAL standard pitch and speed. PAL (Phase Alternating Line) is a standard for analog television broadcast used in many countries. This converter ensures that your audio or video files are compatible with PAL standards, making them suitable for television broadcast and playback.
+PAL Pitch Converter is a user-friendly web application which corrects the speed of your audio and video files to comply with the PAL standard. PAL (Phase Alternating Line) is a standard for analog television broadcasts used in numerous countries. Typically, films and specific U.S. broadcasts are recorded at 24 frames per second, a standard established in the early days of cinema. In PAL regions where the television broadcast frame rate is 25 fps, content needs a 1.0466% speed adjustment to match the standard. By using this converter, your content becomes compatible with PAL standards, making it suitable for television broadcast and playback without any noticeable timing differences.
 
 <a href="https://sloxet.github.io/PAL-Pitch-Converter/">Demo</a>
 
