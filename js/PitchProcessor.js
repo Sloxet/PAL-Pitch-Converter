@@ -2,7 +2,7 @@ function loadSong(t) {
     song = new p5.SoundFile(t, function() {
         playBtn = createButton('<i class="fas fa-play"></i> Play');
         stopBtn = createButton('<i class="fas fa-stop"></i> Stop');
-        PalPitchBtn = createButton('<i class="fa-solid fa-earth-europe"></i> PAL'); // Default to PAL
+        PalPitchBtn = createButton('<i class="fa-solid fa-earth-europe"></i> PAL');
         downloadBtn = createButton('<i class="fas fa-download"></i> Download');
 
         playBtn.class('playBtn');
