@@ -21,13 +21,6 @@ header {
     z-index: 1000;
 }
 
-#flags {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
 main {
     display: flex;
     flex-direction: column;
@@ -44,14 +37,6 @@ main {
     justify-content: center;
 }
 
-#flags img {
-    margin-right: 20px;
-    height: auto;
-}
-
-#flags img:hover {
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-}
 
 p {
     text-align: center;
